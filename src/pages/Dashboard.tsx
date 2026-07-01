@@ -123,7 +123,7 @@ export default function Dashboard() {
       </motion.main>
 
       <footer className="py-6 border-t border-slate-100 text-center text-xs text-slate-400 font-medium">
-        <p>© 2026 班級整潔管理系統 · 整合 Google Sheets 雲端自動化</p>
+        <p>© 2026 施柏宏. All rights reserved.</p>
       </footer>
     </div>
   );
