@@ -2,6 +2,22 @@ import { AppState, User, RecordItem } from '../types';
 
 export const getGasUrl = () => ((import.meta as any).env?.VITE_GAS_API_URL || 'https://script.google.com/macros/s/AKfycbyjvLS4tr80g9TqdVfcdZGGqov9ClbDZjm8JD477I9pE7H_dPcO2qXqCoOUK_q57ltr_A/exec');
 
+export function formatDateTime(isoString: string | undefined | null) {
+  if (!isoString) return '';
+  try {
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return isoString;
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${year}/${month}/${day}  ${hours}:${minutes}`;
+  } catch (e) {
+    return isoString;
+  }
+}
+
 function normalizeObjKeys(obj: any) {
   if (!obj || typeof obj !== 'object') return obj;
   const result: any = {};

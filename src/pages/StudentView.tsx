@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { AppState, User, Zone } from '../types';
-import { Camera, Upload, CheckCircle, AlertCircle, Clock, Trash2, Maximize2, X, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
-import { api } from '../lib/api';
+import { Camera, Upload, CheckCircle, AlertCircle, Clock, Maximize2, X, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { api, formatDateTime } from '../lib/api';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function StudentView({ data, user, reloadData }: { data: AppState, user: User, reloadData: () => void }) {
@@ -103,7 +103,7 @@ export default function StudentView({ data, user, reloadData }: { data: AppState
           ctx.drawImage(img, 0, 0, width, height);
           
           // Add watermark
-          const timestamp = new Date().toLocaleString('zh-TW');
+          const timestamp = formatDateTime(new Date().toISOString());
           const fontSize = Math.max(14, height * 0.04);
           ctx.font = `${fontSize}px Arial`;
           
@@ -209,7 +209,7 @@ export default function StudentView({ data, user, reloadData }: { data: AppState
                 </p>
                 {myRecord.CheckBy ? (
                   <p className="text-xs text-slate-500">
-                    審核人：<span className="font-bold text-slate-700">{myRecord.CheckBy}</span> ({myRecord.CheckTime})
+                    審核人：<span className="font-bold text-slate-700">{myRecord.CheckBy}</span> ({formatDateTime(myRecord.CheckTime)})
                   </p>
                 ) : (
                   <p className="text-xs text-slate-500">
@@ -260,7 +260,7 @@ export default function StudentView({ data, user, reloadData }: { data: AppState
                     </p>
                     {myRecord.CheckBy && (
                       <p className="text-[11px] text-red-700/80 mt-1 font-medium">
-                        審核人：{myRecord.CheckBy} ({myRecord.CheckTime})
+                        審核人：{myRecord.CheckBy} ({formatDateTime(myRecord.CheckTime)})
                       </p>
                     )}
                   </div>
@@ -311,10 +311,10 @@ export default function StudentView({ data, user, reloadData }: { data: AppState
                             e.stopPropagation();
                             removePhoto(idx);
                           }}
-                          className="absolute top-2 right-2 bg-red-500/90 hover:bg-red-600 text-white p-2 rounded-lg shadow-lg active:scale-90 transition-all z-10"
+                          className="absolute top-2 right-2 bg-slate-900/60 hover:bg-red-500/90 text-white p-2 rounded-lg shadow-lg active:scale-90 transition-all z-10 cursor-pointer backdrop-blur-sm"
                           title="刪除照片並重拍"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <X className="w-4 h-4" />
                         </button>
                         <div className="absolute bottom-2 left-2 bg-slate-900/70 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-bold pointer-events-none">
                           照片 {idx + 1} {idx < 2 ? '(必填)' : '(選填)'}
@@ -482,6 +482,26 @@ export default function StudentView({ data, user, reloadData }: { data: AppState
                 className="max-w-full max-h-[75vh] object-contain rounded-2xl border border-white/10 shadow-2xl"
               />
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Loading Overlay */}
+      <AnimatePresence>
+        {uploading && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 backdrop-blur-sm"
+          >
+            <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-[80vw]">
+              <svg className="animate-spin h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              <p className="text-slate-800 font-bold text-sm sm:text-base text-center">正在壓印浮水印並上傳資料<br/><span className="text-slate-500 text-xs mt-1 block">請稍候，可能需要數秒時間...</span></p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

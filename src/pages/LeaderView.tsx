@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { AppState, User, RecordItem, Zone } from '../types';
-import { api } from '../lib/api';
+import { api, formatDateTime } from '../lib/api';
 import { Check, X, Camera, Image as ImageIcon, Maximize2, Calendar, Sparkles, AlertCircle, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -468,7 +468,7 @@ export default function LeaderView({ data, user, reloadData }: { data: AppState,
                         )}
                         {task.record?.CheckBy && (
                           <div className="text-[10px] text-slate-400 text-center font-semibold bg-slate-50 py-1.5 rounded-lg border border-slate-100">
-                            最後更新者：{task.record.CheckBy} ({task.record.CheckTime})
+                            最後更新者：{task.record.CheckBy} ({formatDateTime(task.record.CheckTime)})
                           </div>
                         )}
                       </div>
@@ -516,6 +516,26 @@ export default function LeaderView({ data, user, reloadData }: { data: AppState,
                 className="max-w-full max-h-[75vh] object-contain rounded-2xl border border-white/10 shadow-2xl" 
               />
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Loading Overlay */}
+      <AnimatePresence>
+        {submittingId !== null && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/60 backdrop-blur-sm"
+          >
+            <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl flex flex-col items-center gap-4 max-w-[80vw]">
+              <svg className="animate-spin h-10 w-10 text-indigo-600" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+              <p className="text-slate-800 font-bold text-sm sm:text-base text-center">正在更新打掃成果狀態<br/><span className="text-slate-500 text-xs mt-1 block">請稍候，可能需要數秒時間...</span></p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
