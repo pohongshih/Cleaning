@@ -17,7 +17,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/hong/cleaning">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route 

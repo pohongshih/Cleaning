@@ -299,26 +299,24 @@ export default function StudentView({ data, user, reloadData }: { data: AppState
                       <motion.div 
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="relative group rounded-xl overflow-hidden shadow-sm hover:shadow border border-slate-200"
+                        className="relative group rounded-xl overflow-hidden shadow-sm hover:shadow border border-slate-200 cursor-pointer"
+                        onClick={() => setEnlargedImage(photos[idx])}
                       >
                         <img referrerPolicy="no-referrer" src={photos[idx]} alt={`預覽 ${idx + 1}`} className="w-full object-cover aspect-video bg-slate-50" />
-                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3 transition-all duration-200">
-                          <button 
-                            onClick={() => setEnlargedImage(photos[idx])}
-                            className="bg-white/90 text-slate-800 p-2 rounded-xl shadow-lg hover:bg-white active:scale-90 transition-transform cursor-pointer"
-                            title="放大照片"
-                          >
-                            <Maximize2 className="w-4 h-4" />
-                          </button>
-                          <button 
-                            onClick={() => removePhoto(idx)}
-                            className="bg-red-600/90 text-white p-2 rounded-xl shadow-lg hover:bg-red-600 active:scale-90 transition-transform cursor-pointer"
-                            title="刪除照片"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-200">
+                          <Maximize2 className="text-white w-6 h-6" />
                         </div>
-                        <div className="absolute bottom-2 left-2 bg-slate-900/70 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-bold">
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removePhoto(idx);
+                          }}
+                          className="absolute top-2 right-2 bg-red-500/90 hover:bg-red-600 text-white p-2 rounded-lg shadow-lg active:scale-90 transition-all z-10"
+                          title="刪除照片並重拍"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                        <div className="absolute bottom-2 left-2 bg-slate-900/70 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-bold pointer-events-none">
                           照片 {idx + 1} {idx < 2 ? '(必填)' : '(選填)'}
                         </div>
                       </motion.div>
