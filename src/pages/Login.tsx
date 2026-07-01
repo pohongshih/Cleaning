@@ -86,7 +86,7 @@ export default function Login() {
             班級整潔管理系統
           </h2>
           <p className="mt-2 text-sm text-slate-500">
-            請輸入學號或教職員帳號以開始
+            士林高商資料處理科
           </p>
         </div>
 
