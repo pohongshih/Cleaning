@@ -447,7 +447,7 @@ export default function LeaderView({ data, user, reloadData }: { data: AppState,
                               }}
                               className="flex-1 min-w-[100px] bg-amber-50 text-amber-700 border border-amber-200 py-2.5 rounded-xl text-xs font-bold hover:bg-amber-100/70 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1"
                             >
-                              <Camera className="w-3.5 h-3.5" /> 退回(附圖)
+                              <Camera className="w-3.5 h-3.5" /> 不合格(附圖)
                             </button>
                             {task.record?.Status !== '待審核' && (
                               <button 
@@ -474,7 +474,7 @@ export default function LeaderView({ data, user, reloadData }: { data: AppState,
                       </div>
                     ) : (
                       <div className="text-xs text-slate-400 font-medium italic py-1 text-center bg-slate-50/50 rounded-lg">
-                        學生尚未回報，請督促學生完成打掃
+                        同學尚未回報，請督促同學完成打掃
                       </div>
                     )}
                   </div>
